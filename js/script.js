@@ -1,18 +1,39 @@
 const start_screen = document.querySelector("#start-screen");
+const game_screen = document.querySelector("#game-screen");
+
 const cells = document.querySelectorAll(".main-grid-cell");
+
+const game_level = document.querySelector("#game-level");
+const game_time = document.querySelector("#game-time");
 
 let level_index = 0;
 let level = CONSTANT.LEVEL[level_index];
+
+let timer = null;
+let seconds = 0;
+
 // ---------
 
-document.querySelector("#btn-level").addEventListener("click", (e) => {
-  level_index =
-    level_index + 1 > CONSTANT.LEVEL.length - 1 ? 0 : level_index + 1;
-  level = CONSTANT.LEVEL[level_index];
-  e.target.innerHTML = CONSTANT.LEVEL_NAME[level_index];
-});
+const showTime = (seconds) =>
+  new Date(seconds * 1000).toISOString().substr(11, 8);
 
-const getGameInfo = () => JSON.parse(localStorage.getItem("game"));
+const initSudoku = () => {
+  // generate sudoku puzzle
+};
+
+const startGame = () => {
+  start_screen.classList.remove("active");
+  game_screen.classList.add("active");
+
+  game_level.innerHTML = CONSTANT.LEVEL_NAME[level_index];
+
+  seconds = 0;
+
+  seconds = timer = setInterval(() => {
+    seconds = seconds + 1;
+    game_time.innerHTML = showTime(seconds);
+  }, 1000);
+};
 
 //add space for each 9 cells
 
@@ -29,6 +50,25 @@ const initGameGrid = () => {
   }
 };
 //end add space for each 9 cells
+
+// -------------------
+
+// add button event
+
+document.querySelector("#btn-play").addEventListener("click", () => {
+  startGame();
+});
+
+document.querySelector("#btn-level").addEventListener("click", (e) => {
+  level_index =
+    level_index + 1 > CONSTANT.LEVEL.length - 1 ? 0 : level_index + 1;
+  level = CONSTANT.LEVEL[level_index];
+  e.target.innerHTML = CONSTANT.LEVEL_NAME[level_index];
+});
+
+const getGameInfo = () => JSON.parse(localStorage.getItem("game"));
+
+// ------------------------------
 
 const init = () => {
   const game = getGameInfo();

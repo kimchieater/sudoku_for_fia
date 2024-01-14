@@ -246,3 +246,7 @@ nav {
 .delete {
   background-color: var(--red);
 }
+
+img {
+  border-radius: var(--border-radius);
+}
