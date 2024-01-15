@@ -12,13 +12,37 @@ let level = CONSTANT.LEVEL[level_index];
 let timer = null;
 let seconds = 0;
 
+let su = undefined;
+let su_answer = undefined;
 // ---------
 
 const showTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(11, 8);
 
+const clearSudoku = () => {};
+
 const initSudoku = () => {
+  //clear old sudoku
+  clearSudoku();
   // generate sudoku puzzle
+  su = sudokuGen(level);
+  su_answer = [...su.question];
+
+  console.table(su_answer);
+
+  //show sudoku on div
+
+  for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
+    let row = Math.floor(i / CONSTANT.GRID_SIZE);
+    let col = i % CONSTANT.GRID_SIZE;
+
+    cells[i].setAttribute("data-value", su.question[row][col]);
+
+    if (su.question[row][col] !== 0) {
+      cells[i].classList.add("filled");
+      cells[i].innerHTML = su.question[row][col];
+    }
+  }
 };
 
 const startGame = () => {
@@ -28,6 +52,7 @@ const startGame = () => {
   game_level.innerHTML = CONSTANT.LEVEL_NAME[level_index];
 
   seconds = 0;
+  showTime(seconds);
 
   seconds = timer = setInterval(() => {
     seconds = seconds + 1;
@@ -57,6 +82,7 @@ const initGameGrid = () => {
 
 document.querySelector("#btn-play").addEventListener("click", () => {
   startGame();
+  initSudoku();
 });
 
 document.querySelector("#btn-level").addEventListener("click", (e) => {
