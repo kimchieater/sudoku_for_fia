@@ -19,7 +19,13 @@ let su_answer = undefined;
 const showTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(11, 8);
 
-const clearSudoku = () => {};
+const clearSudoku = () => {
+  for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
+    cells[i].innerHTML = "";
+    cells[i].classList.remove("filled");
+    cells[i].classList.remove("selected");
+  }
+};
 
 const initSudoku = () => {
   //clear old sudoku
@@ -44,6 +50,8 @@ const initSudoku = () => {
     }
   }
 };
+
+const hoverBg = index;
 
 const startGame = () => {
   start_screen.classList.remove("active");
